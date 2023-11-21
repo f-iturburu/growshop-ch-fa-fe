@@ -3,10 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Navbar from "./components/navbar/Navbar"
 import Footer from "./components/footer/Footer"
 import { Error404 } from "./views/error404/Error404"
-import { Home } from "./views/home/home";
+import { Home } from "./views/home/Home";
 import { Cart } from "./views/cart/Cart";
 import { Login } from "./views/login/Login";
-import { SignUp } from "./views/signUp/signUp"
+import { SignUp } from "./views/signUp/SignUp"
 import axios from "axios"
 
 function App() {
