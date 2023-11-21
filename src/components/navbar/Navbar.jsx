@@ -5,37 +5,17 @@ import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { HomeOutlined, ShoppingCartOutlined, LoginOutlined, LogoutOutlined, ShoppingOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu, Badge } from 'antd';
 
-const Navbar = ({ adminLoginKey, userLoginKey, totalProducts, URL }) =>{
+const Navbar = ({ adminLoginKey, userLoginKey, URL, productsQuantity, setProductsQuantity }) =>{
   const [current, setCurrent] = useState('home');
-  const [productsQuantity, setProductsQuantity] = useState(0)
   const location = useLocation();
   const navigate = useNavigate();
   const token = JSON.parse(localStorage.getItem("token"))
- console.log(token.token);
+
   useEffect(()=>{
     if (location.pathname == "/") {
       setCurrent("home");
     }
-    fetchCart()
   },[])
-
-  const fetchCart = async () =>{
-    try {
-      if (token) {
-        
-        const res = await axios.get(`${URL}/cart`, {
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": token.token,
-          }})
-
-          const data = res.data
-          setProductsQuantity(data.products.length)
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
 const logout = () => {
   localStorage.removeItem("token");

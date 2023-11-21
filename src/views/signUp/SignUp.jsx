@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Flex, message } from 'antd';
+import { Button, Checkbox, Form, Input, Flex, message, Typography } from 'antd';
 import { runes } from 'runes2';
 import axios from 'axios';
+const { Title } = Typography;
 
 export const SignUp = ({URL}) => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -21,7 +22,6 @@ export const SignUp = ({URL}) => {
         password: values.password
       })
   
-      console.log(res);
       if (res.status == 201) {
         const data = res.data;
         localStorage.setItem("token", JSON.stringify(data));
@@ -53,9 +53,11 @@ export const SignUp = ({URL}) => {
       <Form
       name="normal_login"
       className="login-form"
+      style={{backgroundColor: "white", padding: "3%", borderRadius: "25px"}}
       initialValues={{ remember: true }}
       onFinish={onFinish}
     >
+       <Title style={{textAlign:"center"}}>Registro</Title>
       <Form.Item
         name="email"
         label="E-mail"

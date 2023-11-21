@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Flex, message } from 'antd';
+import { Button, Checkbox, Form, Input, Flex, message, Typography } from 'antd';
 import { runes } from 'runes2';
 import axios from 'axios';
+const { Title } = Typography;
 
 export const Login = ({URL}) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [loading,setLoading] = useState(false)
   const navigate = useNavigate();
 
-
-  const onFinish = async (values) => {
-   
+  const onFinish = async (values) => {   
     try {
       setLoading(true)
       const res = await axios.post(`${URL}/login`,{
@@ -30,9 +29,13 @@ export const Login = ({URL}) => {
           content: 'El email, nombre de usuario o contraseña ingresados son incorrectos',
         });
       }
-
     } catch (error) {
-      console.log(error);
+      if (error.response.status == 418) {
+        return messageApi.open({
+          type: 'error',
+          content: 'El email, nombre de usuario o contraseña ingresados son incorrectos',
+        });
+      }
       messageApi.open({
         type: 'error',
         content: 'Algo salio mal intenta de nuevo mas tarde',
@@ -45,13 +48,15 @@ export const Login = ({URL}) => {
     return <>
      {contextHolder}
     <div className='body-bg'>
-      <Flex justify='center' align='center'  style={{height:'80vh', width: '100%'}}>
+      <Flex justify='center' align='center' style={{height:'80vh', width: '100%'}}>
       <Form
       name="normal_login"
       className="login-form"
+      style={{backgroundColor: "white", padding: "3%", borderRadius: "25px"}}
       initialValues={{ remember: true }}
       onFinish={onFinish}
     >
+       <Title style={{textAlign:"center"}}>Ingresar</Title>
       <Form.Item
         name="user"
         rules={[{ required: true, message: 'Ingrese un email o nombre de usuario.' }]}

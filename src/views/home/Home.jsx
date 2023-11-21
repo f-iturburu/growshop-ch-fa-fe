@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { SearchInputs } from '../../components/searchInputs/SearchInputs'
 import { ProductCard } from '../../components/productCard/ProductCard'
-import { Flex, Row, Spin } from 'antd'
+import { Flex, Row, Spin, Result } from 'antd'
 import axios from 'axios'
 
-export const Home = ({URL}) => {
+export const Home = ({URL, productsQuantity, setProductsQuantity}) => {
  const [products, setProducts] = useState()
   const [category, setCategory] = useState()
   const [price, setPrice] = useState()
   const [name, setName] = useState()
   const [spinning, setSpinning] = useState(false);
-  const [renderError, setRenderError] = useState(false)
+
 
  useEffect(()=>{
   fetchProducts()
@@ -21,7 +21,6 @@ export const Home = ({URL}) => {
   let queryString = "?"
    
   if (category) {
-    console.log(category);
     queryString.length == 1 ?  queryString += `category=${category}` : queryString += `&category=${category}`
   }
 
@@ -43,12 +42,10 @@ export const Home = ({URL}) => {
 
     if (data?.length == 0) {
       setProducts(null)
-      setRenderError(true)
     }
 
   } catch (error) {
     setProducts(null)
-    setRenderError(true)
   }finally{
     setSpinning(false)
   }
@@ -59,10 +56,17 @@ export const Home = ({URL}) => {
   return <>
   <div className={"body-bg"} style={{paddingTop: "10vh" ,width: '100%'}}>
  <SearchInputs setCategory={setCategory} setPrice={setPrice} setName={setName}/>
- <Flex justify='center' align='center'  style={{height:'80vh', width: '100%'}}>
-   <Row gutter={16}> 
-      {products ? products.map((product, index) => <ProductCard key={index} product={product}/>) : ""}
+ <Flex justify='center' align='center'  style={{width: '100%'}}>
+ <Flex justify='center' align='center'  style={{minHeight:'80vh', width: '90%'}}>
+   <Row gutter={16} >  
+      {products ? products.map((product, index) => <ProductCard key={index} product={product} productsQuantity={productsQuantity} setProductsQuantity={setProductsQuantity} URL={URL}/>) :     <Result
+    status="404"
+    title="404"
+    subTitle="Lo sentimos, no hemos encontrado lo que buscabas"
+  />}
    </Row>
+ </Flex>
+
  </Flex>
  <Spin spinning={spinning} fullscreen />
   </div>
