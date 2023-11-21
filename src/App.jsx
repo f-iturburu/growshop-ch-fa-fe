@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Navbar from "./components/navbar/Navbar"
-import Footer from "./components/Footer/Footer"
+import Footer from "./components/footer/Footer"
 import { Error404 } from "./views/Error404/Error404"
 import { Home } from "./views/home/home";
 import { Cart } from "./views/cart/Cart";
