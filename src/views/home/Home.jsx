@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { SearchInputs } from '../../components/searchInputs/SearchInputs'
 import { ProductCard } from '../../components/productCard/ProductCard'
-import { Flex, Row, Spin, Result } from 'antd'
+import { Flex, Row, Spin, Result, Pagination } from 'antd'
 import axios from 'axios'
 
 export const Home = ({URL, productsQuantity, setProductsQuantity}) => {
@@ -10,7 +10,8 @@ export const Home = ({URL, productsQuantity, setProductsQuantity}) => {
   const [price, setPrice] = useState()
   const [name, setName] = useState()
   const [spinning, setSpinning] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8; 
 
  useEffect(()=>{
   fetchProducts()
@@ -52,6 +53,9 @@ export const Home = ({URL, productsQuantity, setProductsQuantity}) => {
   
  }
  
+ const handleChangePage = (page) => {
+  setCurrentPage(page);
+};
 
   return <>
   <div className={"body-bg"} style={{paddingTop: "10vh" ,width: '100%'}}>
@@ -59,14 +63,22 @@ export const Home = ({URL, productsQuantity, setProductsQuantity}) => {
  <Flex justify='center' align='center'  style={{width: '100%'}}>
  <Flex justify='center' align='center'  style={{minHeight:'80vh', width: '90%'}}>
    <Row gutter={16} >  
-      {products ? products.map((product, index) => <ProductCard key={index} product={product} productsQuantity={productsQuantity} setProductsQuantity={setProductsQuantity} URL={URL}/>) :     <Result
+      {products ? products.slice((currentPage - 1) * pageSize, currentPage * pageSize).map((product, index) => <ProductCard key={index} product={product} productsQuantity={productsQuantity} setProductsQuantity={setProductsQuantity} URL={URL}/>) :     <Result
     status="404"
     title="404"
     subTitle="Lo sentimos, no hemos encontrado lo que buscabas"
   />}
    </Row>
  </Flex>
-
+ </Flex>
+ <Flex justify='center' align='center'  style={{width: '100%', marginTop: 5, marginBottom: 15}}>
+ <Pagination
+       style={{marginTop: 5, marginBottom: 15}}
+        current={currentPage}
+        onChange={handleChangePage}
+        total={products?.length}
+        pageSize={pageSize}
+      />
  </Flex>
  <Spin spinning={spinning} fullscreen />
   </div>

@@ -6,10 +6,12 @@ import {
   ShopOutlined
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import {Space, List, Spin, Flex, Button, Tooltip, message, Typography, Divider } from "antd";
+import {Space, List, Spin, Flex, Button, Tooltip, message, Typography, Divider, Result } from "antd";
 import { formatCurrency } from "../../helpers/formatCurrency";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const { Title } = Typography;
+
 
 const IconText = ({ icon, text }) => (
   <Space>
@@ -22,8 +24,10 @@ export const Cart = ({ URL, productsQuantity, setProductsQuantity }) => {
   const [data, setData] = useState();
   const [spinning, setSpinning] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+  const [loading,setLoading] = useState(false)
   const token = JSON.parse(localStorage.getItem("token"));
- 
+  const navigate = useNavigate();
+  console.log(data);
  
   useEffect(() => {
     fetchProducts();
@@ -104,15 +108,49 @@ export const Cart = ({ URL, productsQuantity, setProductsQuantity }) => {
       setSpinning(false)
     }
   };
+
+  const purchaseHandler = async () =>{
+      try {
+        setLoading(true)
+
+        const res = await axios.post(`${URL}/purchase`, {token: token.token}, {
+            headers: {
+          "Content-Type": "application/json",
+          "auth-token": token.token,
+        },
+        })
+
+        if (res.status == 201) {
+          messageApi.open({
+            type: 'success',
+            content: 'Tu compra ha sido realizada exitosamente!',
+          });
+
+          setProductsQuantity(0)
+          setTimeout(()=>{
+            navigate("/");
+          }, 3000)
+        }
+
+
+      } catch (error) {
+        messageApi.open({
+          type: "error",
+          content: "Algo salio mal intenta de nuevo mas tarde",
+        });
+      }finally{
+        setLoading(false)
+      }
+  }
+
   return (
     <>
     {contextHolder}
-       
- 
         <Spin spinning={spinning} fullscreen />
-        {data ? 
+        {data?.products?.length > 0 ? 
             <>
               <Flex
+              className="body-bg"
         justify="center"
         align="center"
         vertical
@@ -123,11 +161,12 @@ export const Cart = ({ URL, productsQuantity, setProductsQuantity }) => {
           width: "100%",
         }}
       >
-          <Flex justify="space-around" align="center" style={{width:"50%"}}>
+          <Flex justify="space-around" align="center" style={{width:"50%", marginBottom: 15}}>
          <Title level={4} style={{fontWeight: "normal"}}>Precio total: {formatCurrency(data.totalPrice)} </Title>
-         <Button type="primary" icon={<ShopOutlined />}>Finalizar compra</Button>
+         <Button type="primary" icon={<ShopOutlined />} onClick={purchaseHandler} loading={loading}>Finalizar compra</Button>
             </Flex> 
           <List
+          style={{backgroundColor: "white", padding: 10, borderRadius: "20px"}}
             itemLayout="vertical"
             size="large"
             pagination={{
@@ -188,7 +227,11 @@ export const Cart = ({ URL, productsQuantity, setProductsQuantity }) => {
           
           </Flex>
         </> : (
-          ""
+           <Result
+           status="404"
+           title="Vaya, parece que tu carrito está vacio!"
+           subTitle="Agrega productos a tu carrito para efectuar una combra"
+         />
         )}
 
     </>

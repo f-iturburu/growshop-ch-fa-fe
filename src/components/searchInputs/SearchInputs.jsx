@@ -42,12 +42,28 @@ export const SearchInputs = ({setName, setCategory, setPrice}) => {
                 label: "Todas",
               },
               {
-                value: "Test1",
-                label: "Test1",
+                value: "Semillas",
+                label: "Semillas",
               },
               {
-                value: "Test2",
-                label: "Test2",
+                value: "Luces",
+                label: "Luces",
+              },
+              {
+                value: "Papelillos",
+                label: "Papelillos",
+              },
+              {
+                value: "Pipas",
+                label: "Pipas",
+              },
+              {
+                value: "Suplementos",
+                label: "Suplementos",
+              },
+              {
+                value: "Picadores",
+                label: "Picadores",
               },
             ]}
           />
