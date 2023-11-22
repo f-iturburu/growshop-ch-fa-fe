@@ -37,7 +37,6 @@ export const Cart = ({ URL, productsQuantity, setProductsQuantity }) => {
   const [loading, setLoading] = useState(false);
   const token = JSON.parse(localStorage.getItem("token"));
   const navigate = useNavigate();
-  console.log(data);
 
   useEffect(() => {
     fetchProducts();
@@ -84,7 +83,6 @@ export const Cart = ({ URL, productsQuantity, setProductsQuantity }) => {
         setData(data.foundCart);
       }
     } catch (error) {
-      console.log(error);
       messageApi.open({
         type: "error",
         content: "Algo salio mal intenta de nuevo mas tarde",
@@ -111,7 +109,6 @@ export const Cart = ({ URL, productsQuantity, setProductsQuantity }) => {
         setData(data.foundCart);
       }
     } catch (error) {
-      console.log(error);
       messageApi.open({
         type: "error",
         content: "Algo salio mal intenta de nuevo mas tarde",

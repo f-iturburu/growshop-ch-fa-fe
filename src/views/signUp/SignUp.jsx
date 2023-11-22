@@ -28,7 +28,6 @@ export const SignUp = ({URL}) => {
         navigate("/");
       }
     } catch (error) {
-        console.log(error);
       if (error?.response?.status == 400 || error?.response?.status == 401) {
         return messageApi.open({
             type: 'error',

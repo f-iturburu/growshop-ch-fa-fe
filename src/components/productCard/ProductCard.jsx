@@ -50,7 +50,6 @@ export const ProductCard = ({
         setProductsQuantity(++productsQuantity);
       }
     } catch (error) {
-      console.log(error);
       messageApi.open({
         type: "error",
         content: "Algo salio mal intenta de nuevo mas tarde",
