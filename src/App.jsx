@@ -42,7 +42,7 @@ function App() {
         userLoginKey={USER_LOGIN_KEY} URL={URL} productsQuantity={productsQuantity} setProductsQuantity={setProductsQuantity}/>
        <Routes>
         <Route exact path="/" element={<Home URL={URL} productsQuantity={productsQuantity} setProductsQuantity={setProductsQuantity}/>}/>
-        <Route exact path="/cart" element={<Cart URL={URL}/>}/>
+        <Route exact path="/cart" element={<Cart URL={URL} productsQuantity={productsQuantity} setProductsQuantity={setProductsQuantity}/>}/>
         <Route exact path="/login" element={<Login URL={URL}/>}/>
         <Route exact path="/signUp" element={<SignUp URL={URL}/>}/>
         <Route exact path="*" element={<Error404 />} />
